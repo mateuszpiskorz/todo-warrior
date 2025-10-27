@@ -1,0 +1,53 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: todowarrior-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:8080
+      - SQLITE_PATH=/data/app.db
+      - FrontendOrigin=http://localhost:5173
+      - ReminderWorker__Enabled=true
+      - ReminderWorker__Horizon=5
+      - ReminderWorker__Interval=30
+    volumes:
+      - sqldata:/data
+    ports:
+      - "8080:8080"
+    networks:
+      - todowarrior-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend/TodoWarrior.Client
+      dockerfile: Dockerfile
+    container_name: todowarrior-frontend
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8080
+      - VITE_TASKS_HUB_URL=http://localhost:8080/hubs/reminders
+    volumes:
+      - ./frontend/TodoWarrior.Client:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - todowarrior-network
+    depends_on:
+      backend:
+        condition: service_healthy
+
+networks:
+  todowarrior-network:
+    driver: bridge
+
+volumes:
+  sqldata:
+    driver: local

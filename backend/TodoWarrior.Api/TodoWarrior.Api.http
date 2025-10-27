@@ -1,0 +1,6 @@
+@TodoWarrior.Api_HostAddress = http://localhost:5141
+
+GET {{TodoWarrior.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

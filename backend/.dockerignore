@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+**/out/
+**/data/
+**/.vs/
+**/.vscode/
+**/*.db
+**/*.db-shm
+**/*.db-wal
+**/node_modules/
+**/.git/
