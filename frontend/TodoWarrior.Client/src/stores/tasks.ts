@@ -14,14 +14,26 @@ export const useTaskStore = defineStore("tasks", {
         tasks: [] as TaskItem[],
         loading: false,
         showCompleted: false,
+        filterDueDate: null as string | null,
         toasts: [] as Toast[],
         _toastId: 1
     }),
     getters: {
         sortedTasks(state) : TaskItem[] {
-            return [...state.tasks]
-                .filter(t => t.isActive && (!t.isDone || state.showCompleted))
-                .sort((a, b) => new Date(toDateOnlyInput(a.dueDate)).getTime() - new Date(toDateOnlyInput(b.dueDate)).getTime());
+            let filtered = [...state.tasks]
+                .filter(t => t.isActive && (!t.isDone || state.showCompleted));
+            
+            if (state.filterDueDate) {
+                filtered = filtered.filter(t => {
+                    const taskDueDate = toDateOnlyInput(t.dueDate);
+                    return taskDueDate === state.filterDueDate;
+                });
+            }
+            
+            return filtered.sort((a, b) => 
+                new Date(toDateOnlyInput(a.dueDate)).getTime() - 
+                new Date(toDateOnlyInput(b.dueDate)).getTime()
+            );
         }
     }, 
     actions: {
@@ -34,6 +46,12 @@ export const useTaskStore = defineStore("tasks", {
         },
         dismissToast(id: number) {
             this.toasts = this.toasts.filter(t => t.id !== id);
+        },
+        setDueDateFilter(date: string | null) {
+            this.filterDueDate = date;
+        },
+        clearDueDateFilter() {
+            this.filterDueDate = null;
         },
         toggleShowCompleted() {
             this.showCompleted = !this.showCompleted;

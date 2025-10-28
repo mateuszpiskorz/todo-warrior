@@ -54,4 +54,45 @@ Run locally (development)
      ```
    - Default Vite port: 5173 (can be configured in `vite.config.ts` or via `--port`)
 
+## TodoWarrior - User Guide
+### Getting Started
+TodoWarrior is a retro-styled task management application with real-time reminders. Access the app at http://localhost:5173 (frontend) after starting the services.
+
+### Core Features
+Creating Tasks
+1. Quick Create: Press the N key anywhere in the app, or click the "+ New Task" button
+
+2. Fill in the form:
+
+* Title (required): Brief task name (max 200 characters)
+* Description (optional): Detailed notes (max 1000 characters)
+* Due Date: When the task should be completed
+* Reminder At: Set a specific date and time for a notification
+* Done checkbox: Mark completion status (can also toggle from list view)
+* Click "Save" to create the task
+
+Managing Tasks
+From the task list, you can:
+
+* Mark as Done/Undo: Click the "Done" button to toggle completion status
+* Edit: Click "Edit" to modify any task details
+* Delete: Click "Delete" (you'll be asked to confirm)
+
+Viewing Tasks
+
+Filter options (top toolbar):
+
+* Date Filter: Click the date picker to show only tasks due on a specific date
+  * Click "Clear" to remove the filter
+* Show Completed: Toggle the checkbox to include/exclude completed tasks in the list
+
+
+Real-Time Reminders
+
+When a task's reminder time arrives (within 5 minutes):
+
+* You'll receive a toast notification in the top-right corner
+* The notification includes the task title
+* Notifications auto-dismiss after 5 seconds, or click "×" to dismiss manually
+
 
